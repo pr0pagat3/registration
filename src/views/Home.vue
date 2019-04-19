@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
 
     <template>
       <b-container class="bv-example-row">
@@ -29,6 +28,7 @@
                 required
                 placeholder="First Name"
               ></b-form-input>
+              <br />
               <b-form-input
                 id="input-3"
                 v-model="form.lastName"
@@ -37,53 +37,27 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-form inline>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref">Date of Birth:</label>
-              <b-form-select
-                class="mb-2 mr-sm-2 mb-sm-0"
-                :value="null"
-                :options="{ '1': 'One', '2': 'Two', '3': 'Three' }"
-                id="inline-form-custom-select-pref"
-              >
-                <option slot="first" :value="null">Month</option>
-              </b-form-select>
 
-              <b-form-select
-                class="mb-2 mr-sm-2 mb-sm-0"
-                :value="null"
-                :options="{ '1': 'One', '2': 'Two', '3': 'Three' }"
-                id="inline-form-custom-select-pref"
-              >
-                <option slot="first" :value="null">Day</option>
-              </b-form-select>
+            <b-form-group id="input-group-2" label="Your Date of Birth:" label-for="input-4">
+              <b-form-input :id="inline-form-custom-select-pref" v-model="form.dateOfBirth" type="date" required></b-form-input>
+            </b-form-group>
 
-              <b-form-select
-                class="mb-2 mr-sm-2 mb-sm-0"
-                :value="null"
-                :options="{ '1': 'One', '2': 'Two', '3': 'Three' }"
-                id="inline-form-custom-select-pref"
-              >
-                <option slot="first" :value="null">Year</option>
-              </b-form-select>
-            </b-form>
-
-            <b-form-group id="input-group-3" label="Password:" label-for="input-3">
-               <b-form-input
-                id="input-4"
-                v-model="form.password"
-                required
-                placeholder="Password"
-              ></b-form-input>
+            <b-form-group id="input-group-2" label="Your Password:" label-for="input-5">
+              <b-input type="password" id="text-password" v-model="form.password" required placeholder="Password" aria-describedby="password-help-block"></b-input>
+              <b-form-text id="password-help-block">
+                Your password must be 8-20 characters long, contain letters and numbers, and must not
+                contain spaces, special characters, or emoji.
+              </b-form-text>
             </b-form-group>
 
             <b-form-group id="input-group-4">
-              <b-form-checkbox-group v-model="form.checked" id="checkboxes-4">
-                <b-form-checkbox value="agreed">I agree to the terms and conditions</b-form-checkbox>
-              </b-form-checkbox-group>
+              <b-form-radio-group required v-model="form.checked" id="checkboxes-4">
+                <b-form-radio required value="agreed">I agree to the terms and conditions</b-form-radio>
+              </b-form-radio-group>
             </b-form-group>
 
             <b-button type="submit" variant="primary">Register</b-button>
-            <b-button type="reset" variant="danger">Reset</b-button>
+            <b-button type="reset" :style="{ backgroundColor: '#e54711', borderColor: '#e54711' }" >Reset</b-button>
           </b-form>
           <b-card class="mt-3" header="Form Data Result">
             <pre class="m-0">{{ form }}</pre>
@@ -110,6 +84,7 @@ export default {
           firstName: '',
           lastName: '',
           password: '',
+          dateOfBirth: '',
           checked: []
         },
         show: true
@@ -118,7 +93,9 @@ export default {
     methods: {
       onSubmit(evt) {
         evt.preventDefault()
-        alert(JSON.stringify(this.form))
+        alert(JSON.stringify(this.form), 'Success!')
+        this.$router.push("/Login");
+        this.$store.dispatch('registerUser', this.form);
       },
       onReset(evt) {
         evt.preventDefault()
